@@ -9,8 +9,16 @@ class AddPeople(BaseModel):
     description: str
 
 
-# class CreateGrants(BaseModel):
+class CreateGrants(BaseModel):
+    title: str
+    pers_name: str
+    what: str
+    description: str
 
+
+class CreateProjects(BaseModel):
+    name: str
+    description: str
 
 
 class Message(BaseModel):
