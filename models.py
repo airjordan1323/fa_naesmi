@@ -41,29 +41,6 @@ class Partners(ormar.Model):
     # last_change: datetime.datetime = ormar.DateTime()
 
 
-#
-#
-# class Weather(ormar.Model):
-#     class Meta(MainMeta):
-#         pass
-#
-#     id: int = ormar.Integer(primary_key=True)
-#     icon: str = ormar.String(max_length=250)
-#     temperature: int = ormar.Integer()
-#     date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
-#
-#
-# class Contact(ormar.Model):
-#     class Meta(MainMeta):
-#         pass
-#
-#     id: int = ormar.Integer(primary_key=True)
-#     title: str = ormar.String(max_length=150)
-#     face: str = ormar.String(max_length=150)
-#     phone: str = ormar.String(max_length=15)
-#     date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
-#     email: str = ormar.String(max_length=100)
-#     message: str = ormar.String(max_length=100)
-#     checked: bool = ormar.Boolean(default=False)
+
 
 
