@@ -1,22 +1,18 @@
 from pydantic import BaseModel
 
-class Status(BaseModel):
-    message: str
 
-class User(BaseModel):
+class Category(BaseModel):
     id: int
-    username: str
+    name: str
 
 
-class UploadImage(BaseModel):
+class CreateNews(BaseModel):
     title: str
     description: str
 
 
-class GetImage(BaseModel):
-    user: User
-    title: str
-    description: str
+class AddPartners(BaseModel):
+    name: str
 
 
 class Message(BaseModel):

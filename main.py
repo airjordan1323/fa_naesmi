@@ -1,4 +1,6 @@
-from api import image_router
+from api import news_router, partners_router
+from event.api import events_router, history_router, org_router
+from others.api import people_routers
 import uvicorn as uvicorn
 from fastapi import FastAPI
 from db import database, metadata, engine
@@ -21,8 +23,12 @@ async def shutdown() -> None:
     if database_.is_connected:
         await database_.disconnect()
 
-app.include_router(image_router)
-
+app.include_router(news_router)
+app.include_router(events_router)
+app.include_router(history_router)
+app.include_router(org_router)
+app.include_router(people_routers)
+app.include_router(partners_router)
 
 
 
