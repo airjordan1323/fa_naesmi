@@ -3,11 +3,16 @@ from typing import List
 
 from fastapi import APIRouter, UploadFile, File, Form
 
-from schemas import Message, CreateNews, AddPartners
+from schemas import Message, CreateNews, AddPartners, CreateCategory
 from models import *
 
 news_router = APIRouter()
 partners_router = APIRouter()
+
+
+@news_router.post("/category")
+async def create_category(i: CreateCategory):
+    return await Category.objects.create(**i.dict())
 
 
 @news_router.post("/news")
