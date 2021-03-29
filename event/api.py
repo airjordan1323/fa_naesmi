@@ -30,8 +30,8 @@ async def get_events(events_pk: int):
 
 
 @events_router.get("/events-list", response_model=List[Events], responses={404: {"model": Message}})
-async def get_events_list():
-    return await Events.objects.all()
+async def get_events_list(lim: int = None, off: int = None):
+    return await Events.objects.limit(lim).offset(off).all()
 
 
 @history_router.post("/history")
@@ -40,8 +40,8 @@ async def make_history(i: CreateHistory):
 
 
 @history_router.get("/history_list", response_model=List[History], responses={404: {"model": Message}})
-async def get_history_list():
-    return await History.objects.all()
+async def get_history_list(lim: int = None, off: int = None):
+    return await History.objects.limit(lim).offset(off).all()
 
 
 @org_router.post("/org")

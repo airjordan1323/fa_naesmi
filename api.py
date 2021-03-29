@@ -30,10 +30,10 @@ async def create_news(
 async def get_news(news_pk: int):
     return await News.objects.select_related('category').get(pk=news_pk)
 
-
+#TODO/// MUST UDERSTAND FUCKIN PAGINATION!///
 @news_router.get("/news/", response_model=List[News], responses={404: {"model": Message}})
-async def get_news_list():
-    return await News.objects.select_related('category').all()
+async def get_news_list(lim: int = None, off: int = None):
+    return await News.objects.select_related('category').limit(lim).offset(off).all()
 
 
 @partners_router.post("/partners")

@@ -44,8 +44,8 @@ async def create_grants(
 
 
 @other_routers.get("/grants-list", response_model=List[Grants], responses={404: {"model": Message}})
-async def get_grants_list():
-    return await Grants.objects.all()
+async def get_grants_list(lim: int = None, off: int = None):
+    return await Grants.objects.limit(lim).offset(off).all()
 
 
 @other_routers.post("/projects")
@@ -61,7 +61,7 @@ async def create_projects(
 
 
 @other_routers.get("/projects-list", response_model=List[Projects], responses={404: {"model": Message}})
-async def get_projects_list():
-    return await Projects.objects.all()
+async def get_projects_list(lim: int = None, off: int = None):
+    return await Projects.objects.limit(lim).offset(off).all()
 
 
