@@ -6,8 +6,7 @@ class Message(BaseModel):
 
 
 class ApiWeather(BaseModel):
-    icon: str
-    temperature: int
+    temperature: float
 
 
 class PostContact(BaseModel):
