@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class Category(BaseModel):
-    id: int
+class CreateCategory(BaseModel):
+    # id: int
     name: str
 
 
