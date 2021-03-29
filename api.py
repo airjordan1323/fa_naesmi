@@ -1,8 +1,8 @@
 import shutil
 from typing import List
-
-from fastapi import APIRouter, UploadFile, File, Form
-
+from uuid import uuid4
+from fastapi import APIRouter, UploadFile, File, Form, BackgroundTasks, HTTPException
+from services import load_image, save_news
 from schemas import Message, CreateNews, AddPartners, CreateCategory
 from models import *
 
@@ -17,15 +17,13 @@ async def create_category(i: CreateCategory):
 
 @news_router.post("/news")
 async def create_news(
+        background_tasks: BackgroundTasks,
         title: str = Form(...),
         description: str = Form(...),
         file: UploadFile = File(None)
 ):
-    info = CreateNews(title=title, description=description)
-    with open(f'media/news/{file.filename}', "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
     category = await Category.objects.first()
-    return await News.objects.create(file=file.filename, category=category, **info.dict())
+    return await save_news(category.dict().get("name"), file, title, description, background_tasks)
 
 
 @news_router.get("/news/{news_pk}", response_model=News, responses={404: {"model": Message}})
