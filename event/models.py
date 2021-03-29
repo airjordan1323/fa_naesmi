@@ -1,4 +1,5 @@
 import datetime
+
 import ormar
 from models import MainMeta
 
@@ -22,7 +23,7 @@ class History(ormar.Model):
 
     id: int = ormar.Integer(primary_key=True)
     description: str = ormar.String(max_length=100)
-    date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
+    date: datetime.datetime = ormar.DateTime()
 
 
 class Organization(ormar.Model):

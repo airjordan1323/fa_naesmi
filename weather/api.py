@@ -14,8 +14,8 @@ async def post_contact(i: PostContact):
 
 
 @another_router.get("/contact-list", response_model=List[Contact], responses={404: {"model": Message}})
-async def get_partners_list():
-    return await Contact.objects.all()
+async def get_partners_list(lim: int = None, off: int = None):
+    return await Contact.objects.limit(lim).offset(off).all()
 
 
 @another_router.put("/contact-put/{contact_pk}", response_model=Contact)
@@ -23,5 +23,7 @@ async def put_contact(pk: int, contact: PutContact):
     entity = Contact(id=pk, **contact.dict())
     await entity.upsert()
     return entity
+
+
 
 
