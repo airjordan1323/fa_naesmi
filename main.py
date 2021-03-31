@@ -8,6 +8,7 @@ from db import database, metadata, engine
 
 
 app = FastAPI()
+# metadata.drop_all(engine)
 metadata.create_all(engine)
 app.state.databases = database
 

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+import datetime
 
 class Message(BaseModel):
     message: str
@@ -7,7 +7,8 @@ class Message(BaseModel):
 
 class ApiWeather(BaseModel):
     temperature: float
-
+    icon: str
+    pub_date: datetime.datetime
 
 class PostContact(BaseModel):
     title: str

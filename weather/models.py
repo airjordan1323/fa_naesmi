@@ -9,7 +9,8 @@ class Weather(ormar.Model):
 
     id: int = ormar.Integer(primary_key=True)
     temperature: float = ormar.Float()
-    # date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
+    icon: str = ormar.String(max_length=150)
+    pub_date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
 
 
 class Contact(ormar.Model):

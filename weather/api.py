@@ -29,55 +29,28 @@ async def put_contact(pk: int, contact: PutContact):
     return entity
 
 
-@another_router.get("/weathers", response_model=ApiWeather)
+@another_router.get("/weathers", response_model=List[ApiWeather])
 async def get_weathers():
-    url = 'http://api.openweathermap.org/data/2.5/forecast?q=Tashkent&cnt=3&appid=da48613766e09300cf7c0cbeea366629&units=metric'
+    out = []
+    new_weather = await get_forecast()
+    for i in new_weather:
+        out.append(await Weather(temperature=i[0], icon=i[1]).save())
 
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(url)
-        resp.raise_for_status()
-
-        data = resp.json()
-
-    main = data.get('main', {})
-    temp = main.get('temp', 0.0)
-
-    weather = ApiWeather(temperature=temp)
-
-    return weather
+    return out
 
 
-
-
-
-@another_router.get("/weather", response_model=ApiWeather)
-async def get_weathers():
-    queryset = Weather.objects.all()[:3]
-    if len(queryset) == 3:
-        item = queryset[0].pub_date
-        now = datetime.datetime.now()
-        if item.year <= now.year and item.day < now.day and item.month <=now.month:
-            new_items = get_forecast()
-            for delete in queryset:
-                delete.delete()
-            for we in new_items:
-                Weather.objects.create(temperature=we[0])
-            queryset = await Weather.objects.all()[:3]
-        else:
-            new_items = get_forecast()
-            for we in new_items:
-                Weather.objects.create(temperature=we[0])
-            queryset = Weather.objects.all()[:3]
-
-        return queryset
+@another_router.get("/wcheck", response_model=List[ApiWeather])
+async def get_all():
+    return await Weather.objects.all()
 
 
 async def get_forecast():
     url = 'http://api.openweathermap.org/data/2.5/forecast?q=Tashkent&cnt=3&appid=da48613766e09300cf7c0cbeea366629&units=metric'
-    res = await requests.get(url).json()
+    res = requests.get(url).json()
     items = []
     for item in res['list']:
         temp = item['main']['temp']
-        new_arr = [temp]
+        icon = f"https://openweathermap.org/img/wn/{item['weather'][0]['icon']}@2x.png"
+        new_arr = [temp, icon]
         items.append(new_arr)
     return items

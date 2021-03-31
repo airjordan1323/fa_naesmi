@@ -32,8 +32,18 @@ async def get_news(news_pk: int):
 
 #TODO/// MUST UDERSTAND FUCKIN PAGINATION!///
 @news_router.get("/news/", response_model=List[News], responses={404: {"model": Message}})
-async def get_news_list(lim: int = None, off: int = None):
-    return await News.objects.select_related('category').limit(lim).offset(off).all()
+async def get_news_list(lim: int = None, off: int = 0, page: int = None, page_size: int = 10):
+    if lim is None:
+        return await News.objects.select_related('category').paginate(page, page_size).all()
+    elif page is None:
+        return await News.objects.select_related('category').limit(lim).offset(off).all()
+    else:
+        return News.objects.all()
+
+
+# @news_router.get("/news-pg/", response_model=List[News], responses={404: {"model": Message}})
+# async def get_news_list_page(page: int = 1, page_size: int = 10):
+#     return await News.objects.select_related('category').paginate(page, page_size).all()
 
 
 @partners_router.post("/partners")
