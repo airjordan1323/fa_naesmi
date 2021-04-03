@@ -30,7 +30,7 @@ async def create_news(
 async def get_news(news_pk: int):
     return await News.objects.select_related('category').get(pk=news_pk)
 
-#TODO/// MUST UDERSTAND FUCKIN PAGINATION!///
+
 @news_router.get("/news/", response_model=List[News], responses={404: {"model": Message}})
 async def get_news_list(lim: int = None, off: int = 0, page: int = None, page_size: int = 10):
     if lim is None:

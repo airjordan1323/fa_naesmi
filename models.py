@@ -17,16 +17,17 @@ class Category(ormar.Model):
     name: str = ormar.String(max_length=100)
 
 
-class News(ormar.Model):
+class News(Base, ormar.Model):
     class Meta(MainMeta):
         pass
 
     id: int = ormar.Integer(primary_key=True)
-    title: str = ormar.String(max_length=170)
+    # title: str = ormar.String(max_length=170)
     description: str = ormar.String(max_length=500)
     file: str = ormar.String(max_length=1000)
     pub_date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
     category: Optional[Category] = ormar.ForeignKey(Category)
+    bla: str = ormar.String(max_length=111)
 
 
 class Partners(ormar.Model):

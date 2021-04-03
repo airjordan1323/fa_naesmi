@@ -1,10 +1,12 @@
+from graph import graph_router
 from api import news_router, partners_router
+from user.routers import user_router
 from event.api import events_router, history_router, org_router
 from others.api import other_routers
 from weather.api import another_router
 import uvicorn as uvicorn
 from fastapi import FastAPI
-from db import database, metadata, engine
+from db import database, engine, metadata
 
 
 app = FastAPI()
@@ -32,6 +34,8 @@ app.include_router(org_router)
 app.include_router(other_routers)
 app.include_router(partners_router)
 app.include_router(another_router)
+app.include_router(user_router)
+app.include_router(graph_router)
 
 
 if __name__ == "__main__":

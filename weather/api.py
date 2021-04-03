@@ -8,7 +8,6 @@ from .schemas import Message, PostContact, ApiWeather, PutContact
 from .models import *
 from datetime import datetime
 
-
 another_router = APIRouter()
 
 
