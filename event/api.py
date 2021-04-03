@@ -15,7 +15,7 @@ org_router=APIRouter()
 async def create_events(
         title: str = Form(...),
         description: str = Form(...),
-        location: str = Form((...)),
+        location: str = Form(...),
         file: UploadFile = File(None)
 ):
     info = CreateEvents(title=title, description=description, location=location)
