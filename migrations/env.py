@@ -1,18 +1,24 @@
+# import os
+# import sys
 from logging.config import fileConfig
 
 from sqlalchemy import create_engine
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 
+# sys.path = ['', '..', './models'] + sys.path[1:]
+# parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
+# sys.path.append(parent_dir)
+from src.news.models import *
+from src.event.models import *
+from src.others.models import *
+from src.weather.models import *
+from src.user.models import *
+from core.db import ORMAR_DATABASE_URL, metadata
 from alembic import context
-import sys, os
 
-
-sys.path = ['','..'] + sys.path[1:]
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-config = context.config
 
+config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
@@ -27,10 +33,8 @@ fileConfig(config.config_file_name)
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-from db import metadata
 target_metadata = metadata
-URL = "sqlite:///test.db"
-
+URL = ORMAR_DATABASE_URL
 
 
 def run_migrations_offline():
@@ -45,7 +49,6 @@ def run_migrations_offline():
     script output.
 
     """
-    # url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=URL,
         target_metadata=target_metadata,
@@ -71,9 +74,6 @@ def run_migrations_online():
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            # if you use UUID field set also this param
-            # the prefix has to match sqlalchemy import name in alembic
-            # that can be set by sqlalchemy_module_prefix option (default 'sa.')
             user_module_prefix='sa.'
         )
 
