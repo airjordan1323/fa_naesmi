@@ -1,12 +1,12 @@
 from graph import graph_router
-from api import news_router, partners_router
-from user.routers import user_router
-from event.api import events_router, history_router, org_router
-from others.api import other_routers
-from weather.api import another_router
+from src.news.api import news_router, partners_router
+from src.user.routers import user_router
+from src.event.api import events_router, history_router, org_router
+from src.others.api import other_routers
+from src.weather.api import another_router
 import uvicorn as uvicorn
 from fastapi import FastAPI
-from db import database, engine, metadata
+from core.db import database, engine, metadata
 
 
 app = FastAPI()
