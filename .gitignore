@@ -3,3 +3,4 @@ venv
 media
 sqlite.db
 __pycache__
+migrations/versions

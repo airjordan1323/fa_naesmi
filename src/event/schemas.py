@@ -6,6 +6,7 @@ class CreateEvents(BaseModel):
     title: str
     description: str
     location: str
+    date: datetime
 
 
 class CreateHistory(BaseModel):

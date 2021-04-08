@@ -1,14 +1,13 @@
 import shutil
-from typing import List, Optional
+from typing import List, Optional, Union
 from uuid import uuid4
-
-from fastapi import APIRouter, UploadFile, File, Form, BackgroundTasks, HTTPException
-from .services import load_image
+from ..utils.services import load_image, ultimate_view
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from .schemas import Message, AddPartners, CreateCategory, CreateNews
 from .models import Category, News, Partners
 
-news_router = APIRouter()
-partners_router = APIRouter()
+news_router = APIRouter(tags=["News and Category"])
+partners_router = APIRouter(tags=["Partners"])
 
 
 @news_router.post("/category")
@@ -23,19 +22,15 @@ async def get_category():
 
 @news_router.post("/news")
 async def create_news(
-        background_tasks: BackgroundTasks,
         title: str = Form(...),
         description: str = Form(...),
         category_id: int = Form(...),
         file: UploadFile = File(None)
 ):
     if file is not None:
-        file_name = f'media/news/{category_id}_{uuid4()}.jpeg'
-        if file.content_type == 'image/jpeg':
-            # background_tasks.add_task(load_image, file_name, file)
-            await load_image(file_name, file)
-        else:
-            raise HTTPException(status_code=418, detail="Это не формат изображений!")
+        file_name = f'media/news/{category_id}_{uuid4()}.png'
+        await load_image(file_name, file)
+
     else:
         file_name = None
     info = CreateNews(title=title, description=description)
@@ -44,7 +39,6 @@ async def create_news(
     except:
         return {"msg": "invalid category id"}
     return await News.objects.create(file=file_name, category=some, **info.dict())
-    # return await save_news(some.dict(), file, title, description, background_tasks)
 
 
 @news_router.get("/news/{news_pk}", response_model=News, responses={404: {"model": Message}})
@@ -52,14 +46,10 @@ async def get_news(news_pk: int):
     return await News.objects.select_related('category').get(pk=news_pk)
 
 
-@news_router.get("/news/", response_model=List[News], responses={404: {"model": Message}})
-async def get_news_list(lim: int = None, off: int = 0, page: int = None, page_size: int = 10):
-    if lim is not None:
-        return await News.objects.limit(lim).offset(off).all()
-    elif page is not None:
-        return await News.objects.paginate(page, page_size).all()
-    else:
-        return await News.objects.all()
+@news_router.get("/news-list", responses={404: {"model": Message}})
+@ultimate_view
+def get_news_list():
+    return {"model": News}
 
 
 @partners_router.post("/partners")
@@ -73,6 +63,7 @@ async def add_partners(
     return await Partners.objects.create(file=file.filename, **i.dict())
 
 
-@partners_router.get("/partners-list", response_model=List[Partners], responses={404: {"model": Message}})
-async def get_partners_list():
-    return await Partners.objects.all()
+@partners_router.get("/partners-list", responses={404: {"model": Message}})
+@ultimate_view
+def get_partners_list():
+    return {"model": Partners}

@@ -9,10 +9,21 @@ from fastapi import FastAPI
 from core.db import database, engine, metadata
 
 
-app = FastAPI()
+app = FastAPI(
+    docs_url="/docs",
+    redoc_url="/redocs",
+    title="Oav.uz | Naesmi",
+    description="Oav.uz in FastAPI",
+    version="1.0",
+    openapi_url="/api/v1/openapi.json",
+)
+
+#TODO ADD DELETE AND UPDATE ALL URLS
+
 # metadata.drop_all(engine)
 metadata.create_all(engine)
 app.state.databases = database
+
 
 @app.on_event("startup")
 async def startup() -> None:

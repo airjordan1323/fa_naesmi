@@ -11,8 +11,8 @@ class Events(ormar.Model):
     title: str = ormar.String(max_length=300)
     description: str = ormar.String(max_length=100)
     location: str = ormar.String(max_length=100)
-    file: str = ormar.String(max_length=1000)
-    date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
+    file: str = ormar.String(max_length=1000, nullable=True)
+    date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
     # url: str = ormar.String(max_length=1000)
 
 
