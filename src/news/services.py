@@ -15,11 +15,8 @@ async def save_news(
         background_tasks: BackgroundTasks):
 
     file_name = f'media/news/{category}_{uuid4()}.jpeg'
-    if file.content_type == 'image/jpeg':
-        # background_tasks.add_task(load_image, file_name, file)
-        await load_image(file_name, file)
-    else:
-        raise HTTPException(status_code=418, detail="Это не формат изображений!")
+    background_tasks.add_task(load_image, file_name, file)
+    await load_image(file_name, file)
     info = CreateNews(title=title, description=description)
     some = await Category.objects.create(name=category)
     return await News.objects.create(file=file.filename, category=some, **info.dict())

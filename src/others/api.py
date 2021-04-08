@@ -1,13 +1,15 @@
-import shutil
 from typing import List
-from fastapi import APIRouter, UploadFile, File, Form
-from .schemas import *
+
+from fastapi import APIRouter, File, Form
+
 from .models import *
+from .schemas import *
+from src.utils.services import *
 
 other_routers = APIRouter()
 
 
-@other_routers.post("/people")
+@other_routers.post("/people", tags=["Peoples"])
 async def add_people(
         position: str = Form(...),
         name: str = Form(...),
@@ -18,17 +20,21 @@ async def add_people(
 ):
     i = AddPeople(position=position, name=name, first_name=first_name,
                   last_name=last_name, description=description)
-    with open(f'media/people/{file.filename}', "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    return await People.objects.create(file=file.filename, **i.dict())
+    if file is not None:
+        file_name = f'media/news/{file.filename}'
+        await load_image(file_name, file)
+    else:
+        file_name = None
+    return await People.objects.create(file=file_name, **i.dict())
 
 
-@other_routers.get("/people-list", response_model=List[People], responses={404: {"model": Message}})
-async def get_people_list():
-    return await People.objects.all()
+@other_routers.get("/people-list", responses={404: {"model": Message}}, tags=["Peoples"])
+def get_people_list():
+    return {"model": People}
 
 
-@other_routers.post("/grants")
+
+@other_routers.post("/grants", tags=["Grants"])
 async def create_grants(
         title: str = Form(...),
         pers_name: str = Form(...),
@@ -38,30 +44,38 @@ async def create_grants(
 ):
     i = CreateGrants(title=title, pers_name=pers_name, what=what,
                      description=description)
-    with open(f'media/grants/{file.filename}', "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    return await Grants.objects.create(file=file.filename, **i.dict())
+    if file is not None:
+        file_name = f'media/news/{file.filename}'
+        await load_image(file_name, file)
+    else:
+        file_name = None
+    return await Grants.objects.create(file=file_name, **i.dict())
 
 
-@other_routers.get("/grants-list", response_model=List[Grants], responses={404: {"model": Message}})
-async def get_grants_list(lim: int = None, off: int = None):
-    return await Grants.objects.limit(lim).offset(off).all()
+@other_routers.get("/grants-list", responses={404: {"model": Message}}, tags=["Grants"])
+@ultimate_view
+def get_grants_list():
+    return {"model": Grants}
 
 
-@other_routers.post("/projects")
+
+@other_routers.post("/projects", tags=["Projects"])
 async def create_projects(
         name: str = Form(...),
         description: str = Form(...),
         file: UploadFile = File(None)
 ):
     i = CreateProjects(name=name, description=description)
-    with open(f'media/projects/{file.filename}', "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    return await Projects.objects.create(file=file.filename, **i.dict())
+    if file is not None:
+        file_name = f'media/news/{file.filename}'
+        await load_image(file_name, file)
+    else:
+        file_name = None
+    return await Projects.objects.create(file=file_name, **i.dict())
 
 
-@other_routers.get("/projects-list", response_model=List[Projects], responses={404: {"model": Message}})
-async def get_projects_list(lim: int = None, off: int = None):
-    return await Projects.objects.limit(lim).offset(off).all()
-
+@other_routers.get("/projects-list", responses={404: {"model": Message}}, tags=["Projects"])
+@ultimate_view
+def project_list():
+    return {"model": Projects}
 

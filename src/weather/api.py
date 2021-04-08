@@ -1,34 +1,43 @@
-import fastapi
-import httpx
-import shutil
 import requests
 from typing import List
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from .schemas import Message, PostContact, ApiWeather, PutContact
 from .models import *
-from datetime import datetime
 
 another_router = APIRouter()
 
 
-@another_router.post("/contact")
+@another_router.post("/contact", tags=["Contacts"])
 async def post_contact(i: PostContact):
     return await Contact.objects.create(**i.dict())
 
 
-@another_router.get("/contact-list", response_model=List[Contact], responses={404: {"model": Message}})
-async def get_partners_list(lim: int = None, off: int = None):
-    return await Contact.objects.limit(lim).offset(off).all()
+@another_router.get("/contact-list", response_model=List[Contact], responses={404: {"model": Message}}, tags=["Contacts"])
+async def get_partners_list(lim: int = None, off: int = None, checked: bool = None):
+    if lim is not None:
+        try:
+            return await Contact.objects.limit(lim).all()
+        except:
+            return await Contact.objects.offset(off).all()
+    if checked is not None:
+        try:
+            return await Contact.objects.limit(lim).offset(off).filter(checked=checked).all()
+        except:
+            return await Contact.objects.filter(checked=checked).all()
+        # finally:
+        #     raise HTTPException(status_code=418, detail="Фильтрация по таким параметрам невозможно!"
+        #                                             " Убедитесь что правильно ввели данные!")
+    else:
+        return await Contact.objects.all()
 
-
-@another_router.put("/contact-put/{contact_pk}", response_model=Contact)
+@another_router.put("/contact-put/{contact_pk}", response_model=Contact, tags=["Contacts"])
 async def put_contact(pk: int, contact: PutContact):
     entity = Contact(id=pk, **contact.dict())
     await entity.upsert()
     return entity
 
 
-@another_router.get("/weathers", response_model=List[ApiWeather])
+@another_router.get("/weathers", response_model=List[ApiWeather], tags=["Weather"])
 async def get_weathers():
     out = []
     new_weather = await get_forecast()
@@ -38,7 +47,7 @@ async def get_weathers():
     return out
 
 
-@another_router.get("/wcheck", response_model=List[ApiWeather])
+@another_router.get("/wcheck", response_model=List[ApiWeather], tags=["Weather"])
 async def get_all():
     return await Weather.objects.all()
 

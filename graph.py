@@ -1,7 +1,7 @@
 import graphene
 from fastapi import FastAPI, APIRouter
 from starlette.graphql import GraphQLApp
-graph_router = APIRouter()
+graph_router = APIRouter(tags=["Graphql"])
 
 
 app = FastAPI(title='ContactQL', description='GraphQL Contact APIs', version='0.1')
