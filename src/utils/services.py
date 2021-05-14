@@ -1,5 +1,4 @@
 from typing import Union
-
 import aiofiles
 from fastapi import UploadFile, HTTPException
 
@@ -10,8 +9,9 @@ async def load_image(file_name: str = None, file: UploadFile = None):
         await buffer.write(data)
 
 
-async def filters_backends(model, limit: Union[int, None] = None, off: Union[int, None] = 0, page: Union[int, None] = None,
-                     page_size: Union[int, None] = 10, ordering: Union[str, None] = None):
+async def filters_backends(model, limit: Union[int, None] = None, off: Union[int, None] = 0,
+                           page: Union[int, None] = None,
+                           page_size: Union[int, None] = 10, ordering: Union[str, None] = None):
     if (limit and off) is not None:
         return model.limit(limit).offset(off)
     elif (page and page_size) is not None:
@@ -34,7 +34,3 @@ def ultimate_view(func, *args, **kwargs):
         return await model.all()
 
     return view
-
-
-
-

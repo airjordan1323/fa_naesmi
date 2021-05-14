@@ -13,7 +13,6 @@ class Events(ormar.Model):
     location: str = ormar.String(max_length=100)
     file: str = ormar.String(max_length=1000, nullable=True)
     date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
-    # url: str = ormar.String(max_length=1000)
 
 
 class History(ormar.Model):
@@ -32,4 +31,3 @@ class Organization(ormar.Model):
     id: int = ormar.Integer(primary_key=True)
     name: str = ormar.String(max_length=150)
     file: str = ormar.String(max_length=1000)
-    # url: str = ormar.String(max_length=1000)

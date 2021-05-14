@@ -8,7 +8,8 @@ from .models import Events, History, Organization
 
 events_router = APIRouter(tags=["Events"])
 history_router = APIRouter(tags=["History"])
-org_router=APIRouter(tags=["Organizations"])
+org_router = APIRouter(tags=["Organizations"])
+
 
 @events_router.post("/events")
 async def create_events(
@@ -39,8 +40,6 @@ def get_events_list():
     return {"model": Events}
 
 
-
-
 @history_router.post("/history")
 async def make_history(i: CreateHistory):
     return await History.objects.create(**i.dict())
@@ -69,5 +68,3 @@ async def add_org(
 @org_router.get("/org-list", response_model=List[Organization], responses={404: {"model": Message}})
 async def get_org_list():
     return await Organization.objects.all()
-
-

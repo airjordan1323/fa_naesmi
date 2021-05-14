@@ -18,7 +18,7 @@ app = FastAPI(
     openapi_url="/api/v1/openapi.json",
 )
 
-#TODO ADD DELETE AND UPDATE ALL URLS
+# ADD DELETE AND UPDATE ALL URLS
 
 # metadata.drop_all(engine)
 metadata.create_all(engine)

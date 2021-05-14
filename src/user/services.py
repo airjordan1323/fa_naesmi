@@ -11,7 +11,6 @@ async def save_user(
         email: str,
         file: UploadFile,
         full_name: str,
-        background_tasks: BackgroundTasks
 ):
     file_name = f'media/user/{username}_{uuid4()}.jpeg'
     if file.content_type == 'image/jpeg':

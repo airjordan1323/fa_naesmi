@@ -36,7 +36,5 @@ class Partners(ormar.Model):
     id: int = ormar.Integer(primary_key=True)
     name: str = ormar.String(max_length=50)
     file: str = ormar.String(max_length=1000)
-    # url: str = ormar.String(max_length=1000)
     pub_date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
-    # last_change: datetime.datetime = ormar.DateTime()
 
