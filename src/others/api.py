@@ -1,7 +1,5 @@
 from typing import List
-
 from fastapi import APIRouter, File, Form
-
 from .models import *
 from .schemas import *
 from src.utils.services import *
@@ -33,7 +31,6 @@ def get_people_list():
     return {"model": People}
 
 
-
 @other_routers.post("/grants", tags=["Grants"])
 async def create_grants(
         title: str = Form(...),
@@ -58,7 +55,6 @@ def get_grants_list():
     return {"model": Grants}
 
 
-
 @other_routers.post("/projects", tags=["Projects"])
 async def create_projects(
         name: str = Form(...),
@@ -78,4 +74,3 @@ async def create_projects(
 @ultimate_view
 def project_list():
     return {"model": Projects}
-

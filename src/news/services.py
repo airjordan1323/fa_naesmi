@@ -1,5 +1,4 @@
 import shutil
-
 import aiofiles
 from uuid import uuid4
 from fastapi import UploadFile, HTTPException, BackgroundTasks, File
@@ -28,7 +27,3 @@ async def load_image(file_name: str = None, file: UploadFile = None):
         await buffer.write(data)
     # with open(file_name, "wb") as buffer:
     #     shutil.copyfileobj(file.file, buffer)
-
-
-# async def lim_off_page(lim: int=None, off: int=None, page: int = None, page_size=None):
-#     pass

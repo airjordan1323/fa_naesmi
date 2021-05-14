@@ -9,10 +9,6 @@ from starlette.requests import Request
 from .schemas import UserDB
 
 
-# user_router = APIRouter()
-
-
-
 def on_after_register(user: UserDB, request: Request) -> None:
     print(f"User {user.id} has registered.")
 
@@ -27,8 +23,6 @@ def on_after_forgot_password(user: UserDB, token: str, request: Request):
 
 def after_verification_request(user: UserDB, token: str, request: Request) -> None:
     print(f"{user} - {token}")
-
-
 
 # @user_router.post("/user/create")
 # async def create_user(
@@ -45,4 +39,3 @@ def after_verification_request(user: UserDB, token: str, request: Request) -> No
 #     else:
 #         raise HTTPException(status_code=418, detail="Это не формат изображений!")
 #     return await User.objects.create(file=file.filename, **info.dict())
-

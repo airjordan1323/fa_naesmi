@@ -37,6 +37,4 @@ class Projects(ormar.Model):
     name: str = ormar.String(max_length=150)
     description: str = ormar.String(max_length=100)
     file: str = ormar.String(max_length=1000)
-    # url: str = ormar.String(max_length=1000)
     date: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())
-    # last_change: datetime.datetime = ormar.DateTime(default=datetime.datetime.now())

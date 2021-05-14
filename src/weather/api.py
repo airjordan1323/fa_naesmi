@@ -12,7 +12,8 @@ async def post_contact(i: PostContact):
     return await Contact.objects.create(**i.dict())
 
 
-@another_router.get("/contact-list", response_model=List[Contact], responses={404: {"model": Message}}, tags=["Contacts"])
+@another_router.get("/contact-list", response_model=List[Contact], responses={404: {"model": Message}},
+                    tags=["Contacts"])
 async def get_partners_list(lim: int = None, off: int = None, checked: bool = None):
     if lim is not None:
         try:
@@ -29,6 +30,7 @@ async def get_partners_list(lim: int = None, off: int = None, checked: bool = No
         #                                             " Убедитесь что правильно ввели данные!")
     else:
         return await Contact.objects.all()
+
 
 @another_router.put("/contact-put/{contact_pk}", response_model=Contact, tags=["Contacts"])
 async def put_contact(pk: int, contact: PutContact):
